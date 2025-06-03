@@ -1,6 +1,6 @@
 # 🏎️ MCP Server F1Analisys
 
-<img src="./content/example.gif">
+<img src="./content/example.gif" width="1000">
 
 A Model Context Protocol (MCP) server for interacting with F1Analisys through LLM interfaces like Claude. **You will need to have Claude installed on your system to continue.**
 
