@@ -208,5 +208,5 @@ async def get_comparative_lap_time(
     result = await get_image_analisys([type_session,"comparative_lap_time",year,round,session,drivers_laps_range])
     return result
 
-if __name__ == "__main__":
+def main():
     mcp.run()

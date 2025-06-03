@@ -1,12 +1,15 @@
 # 🏎️ MCP Server F1Analisys
 
-<video width="560" height="315" controls>
-  <source src="./content/example.mp4" type="video/mp4">
-</video>
+<img src="./content/example.gif">
 
 A Model Context Protocol (MCP) server for interacting with F1Analisys through LLM interfaces like Claude.
 
 ## Getting Started
+First of all, you need to install `mcp-f1analisys` package from pypi with pip, using the following command:
+```commandline
+pip install mcp-f1analisys
+```
+
 To use `mcp-f1analisys` server in claude can be configured by adding the following to your configuration file.
 - Windows: `%APPDATA%/Claude/claude_desktop_config.json`
 - Linux: `~/Library/Application Support/Claude/claude_desktop_config.json`
@@ -17,9 +20,7 @@ Add the F1Analisys MCP server configuration:
   "mcpServers": {
     "mcp-f1analisys": {
       "command": "python",
-      "args": [
-        "path/to/server.py"
-      ]
+      "args": [ "-m", "mcp-f1analisys" ]
     }
   }
 }
