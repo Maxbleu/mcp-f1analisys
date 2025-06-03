@@ -2,7 +2,7 @@
 
 <img src="./content/example.gif">
 
-A Model Context Protocol (MCP) server for interacting with F1Analisys through LLM interfaces like Claude.
+A Model Context Protocol (MCP) server for interacting with F1Analisys through LLM interfaces like Claude. **You will need to have Claude installed on your system to continue.**
 
 ## Getting Started
 First of all, you need to install `mcp-f1analisys` package from pypi with pip, using the following command:
