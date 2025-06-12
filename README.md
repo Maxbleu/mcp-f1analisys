@@ -55,6 +55,7 @@ mcp install .\server.py
 The requirementes used to build this MCP server are:
 - `mcp[cli]`
 - `httpx`
+- `fastmcp`
 
 ## Testing 
 You can test the server using the MCP Inspector:
