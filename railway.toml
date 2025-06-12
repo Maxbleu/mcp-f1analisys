@@ -11,5 +11,5 @@ PORT                = "8000"
 RAILWAY_ENVIRONMENT = "production"
 
 [[services]]
-name   = "mcp-f1analisys"
+name   = "mcp_f1analisys"
 source = "."
