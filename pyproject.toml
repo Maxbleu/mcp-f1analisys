@@ -6,7 +6,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mcp-f1analisys"
+name = "mcp_f1analisys"
 dynamic = ["version"]
 description = "MCP F1 analysis server for Formula 1 telemetry data visualization"
 readme = "README.md"
