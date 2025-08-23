@@ -1,16 +1,20 @@
+import base64
 from pydantic import Field
 from mcp.server.fastmcp import Image
 from ..utils.http_client import F1AnalysisClient
 from ..utils.path_utils import get_full_path
+from ..model import DriversLapsRange
 
 # Global client instance
 client = F1AnalysisClient()
 
-async def get_image_analysis(params: list) -> Image:
+async def get_image_analysis(params: list) -> str:
     """Get F1 analysis image from API"""
     full_path = get_full_path(params)
     image_data = await client.get_image(full_path)
-    return Image(data=image_data, format="png")
+    image_base64 = base64.b64encode(image_data).decode("utf-8")
+    image_base64_str = f"data:image/png;base64,{image_base64}"
+    return image_base64_str
 
 def register_f1_tools(mcp):
     """Register all F1 analysis tools with the MCP server"""
@@ -21,7 +25,7 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'.")
-        ) -> Image:
+        ) -> str:
         """Get F1 top speed data visualization from the session"""
         return await get_image_analysis([type_session, "top_speed", year, round, session])
 
@@ -31,7 +35,7 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'.")
-        ) -> Image:
+        ) -> str:
         """Get F1 average braking data visualization from the session"""
         return await get_image_analysis([type_session, "braking", year, round, session])
 
@@ -41,7 +45,7 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'.")
-        ) -> Image:
+        ) -> str:
         """Get F1 average throttle data visualization from the session"""
         return await get_image_analysis([type_session, "throttle", year, round, session])
 
@@ -51,7 +55,7 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'.")
-        ) -> Image:
+        ) -> str:
         """Get F1 fastest laps data visualization from the session"""
         return await get_image_analysis([type_session, "fastest_laps", year, round, session])
 
@@ -61,7 +65,7 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'.")
-        ) -> Image:
+        ) -> str:
         """Get F1 lap time average data visualization from the session"""
         return await get_image_analysis([type_session, "lap_time_average", year, round, session])
 
@@ -71,7 +75,7 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'.")
-        ) -> Image:
+        ) -> str:
         """Get F1 team performance data visualization from the session"""
         return await get_image_analysis([type_session, "team_performace", year, round, session])
 
@@ -81,7 +85,7 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'. In this case, this image can only take 'R' and 'Q' as session.")
-        ) -> Image:
+        ) -> str:
         """Get F1 race position evolution data visualization from the session"""
         return await get_image_analysis([type_session, "race_position_evolution", year, round, session])
 
@@ -91,7 +95,7 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'. In this case, this image can only take 'R' and 'Q' as session.")
-        ) -> Image:
+        ) -> str:
         """Get F1 lap time distribution data visualization from the session"""
         return await get_image_analysis([type_session, "lap_time_distribution", year, round, session])
 
@@ -101,7 +105,7 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'.")
-        ) -> Image:
+        ) -> str:
         """Get F1 fatest drivers compound data visualization from the session"""
         return await get_image_analysis([type_session, "fastest_drivers_compound", year, round, session])
 
@@ -111,15 +115,19 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'."),
-        drivers_laps_range: dict = Field(
+        drivers_laps_range: DriversLapsRange = Field(
             description="""Dictionary list where the key is the name of the driver and value is driver range laps selected
-                        E.G:{ 
-                                LEC: [8,15],
-                                VER: [9,12],
-                                PIA: [10,14]
-                            }"""
+                        E.G:
+                            {
+                                "drivers_laps": { 
+                                    LEC: [8,15],
+                                    VER: [9,12],
+                                    PIA: [10,14]
+                                }
+                            }
+                        """
         ),
-        ) -> Image:
+        ) -> str:
         """Get a long run analysis of specific drivers between selected laps of the session"""
         return await get_image_analysis([type_session, "long_runs", year, round, session, drivers_laps_range])
 
@@ -129,15 +137,19 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'."),
-        drivers_laps_range: dict = Field(
+        drivers_laps_range: DriversLapsRange = Field(
             description="""Dictionary list where the key is the name of the driver and value is the lap selected
-                        E.G:{ 
-                                LEC: [8],
-                                VER: [9],
-                                PIA: [10]
-                            }"""
+                        E.G:
+                            {
+                                "drivers_laps":{ 
+                                    LEC: [8],
+                                    VER: [9],
+                                    PIA: [10]
+                                }
+                            }
+                        """
             )
-        ) -> Image:
+        ) -> str:
         """Get F1 track dominance data visualization from the session"""
         return await get_image_analysis([type_session, "track_dominance", year, round, session, drivers_laps_range])
 
@@ -147,14 +159,28 @@ def register_f1_tools(mcp):
         year: int = Field(description="The year of the season when the session was held"),
         round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
         session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'."),
-        drivers_laps_range: dict = Field(
+        drivers_laps_range: DriversLapsRange = Field(
             description="""Dictionary list where the key is the name of the driver and value is the lap selected
-                        E.G:{ 
-                                LEC: [8],
-                                VER: [9],
-                                PIA: [10]
-                            }"""
+                        E.G:
+                            {
+                                "drivers_laps":{ 
+                                    LEC: [8],
+                                    VER: [9],
+                                    PIA: [10]
+                                }
+                            }
+                        """
             )
-        ) -> Image:
+        ) -> str:
         """Get F1 comparative lap time data visualization from the session"""
         return await get_image_analysis([type_session, "comparative_lap_time", year, round, session, drivers_laps_range])
+
+    @mcp.tool(name="optimal_lap_impact")
+    async def get_optimal_lap_impact(
+        type_session: str = Field(description="Type of session in general terms: official or pretest (pre-session test)"),
+        year: int = Field(description="The year of the season when the session was held"),
+        round: int = Field(description="The round number of the championship, for example 1 for the first Grand Prix."),
+        session: str = Field(description="The exact name of the session within the event, such as 'FP1', 'FP2', 'Q', 'R', or 'Sprint'. In this case, this image can only take 'Q', SS and 'SQ' as session.")
+    ) -> str:
+        """Get F1 optimal lap impact data visualization from the session"""
+        return await get_image_analysis([type_session, "optimal_lap_impact", year, round, session])
